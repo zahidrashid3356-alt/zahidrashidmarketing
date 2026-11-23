@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Onest } from "next/font/google";
 
 import {
   generateMetadata,
@@ -13,20 +13,15 @@ import { AdaptiveGrid } from "@/components/common/grid";
 import { JsonLd } from "@/components/common/json-ld";
 import { originSyncScript } from "@/components/common/origin-sync";
 import { ReducedMotion } from "@/components/common/reduced-motion";
+import { Aurora } from "@/components/scene/aurora";
 import { ParticleBackground } from "@/components/site/particle-background";
 import { ScrollLayout } from "@/layouts/scroll-layout";
 import { siteConfig } from "@/lib/site";
 
 import "@/app/globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-jakarta",
+const onest = Onest({
+  variable: "--font-onest",
   subsets: ["latin"],
   display: "swap",
 });
@@ -53,7 +48,7 @@ export default function RootLayout({
   return (
     // `data-consent` is set on <html> by CONSENT_FLAG_SCRIPT before hydration.
     <html lang={siteConfig.locale.split("_")[0]} suppressHydrationWarning>
-      <body className={`${inter.variable} ${jakarta.variable}`}>
+      <body className={`${onest.variable}`}>
         {/* Before anything is parsed: marks a returning visitor's choice so the
             server-rendered consent banner is hidden before its first paint. */}
         <script dangerouslySetInnerHTML={{ __html: CONSENT_FLAG_SCRIPT }} />
@@ -65,6 +60,7 @@ export default function RootLayout({
         <ScrollLayout>
           <AdaptiveGrid />
           <ReducedMotion />
+          <Aurora />
           <ParticleBackground />
           <LazyCookie />
           {children}

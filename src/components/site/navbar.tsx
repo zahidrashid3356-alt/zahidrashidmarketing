@@ -21,7 +21,7 @@ const SPRING_CONFIG = { tension: 210, friction: 26 };
 const CLOSE_DELAY_MS = 140;
 
 const LINK =
-  "text-base text-muted transition-colors duration-[var(--duration-fast)] ease-entrance hover:text-foreground";
+  "nav-link text-base transition-colors duration-[var(--duration-fast)] ease-entrance";
 
 const Chevron = ({ open }: { open: boolean }) => (
   <svg
@@ -122,7 +122,7 @@ export const Navbar = () => {
                     aria-expanded={open}
                     aria-controls={panelId}
                     onClick={() => setOpen((value) => !value)}
-                    className={`${LINK} flex items-center gap-1.5 ${open ? "text-foreground" : ""}`}
+                    className={`${LINK} flex items-center gap-1.5`}
                   >
                     {MEGA_MENU.title}
                     <Chevron open={open} />
@@ -141,10 +141,10 @@ export const Navbar = () => {
 
         <div className="flex items-center gap-3">
           <div className="hidden items-center gap-3 xl:flex">
-            <ContactLink className={buttonClass("primary", "sm")}>{CONTACT_CTA.label}</ContactLink>
+            <ContactLink className={`${buttonClass("primary", "sm")} nav-cta`}>{CONTACT_CTA.label}</ContactLink>
             <a
               href={`tel:${PHONE.tel}`}
-              className="inline-flex items-center justify-center gap-2 rounded-pill border border-muted px-5 py-2.5 text-sm font-medium text-muted transition-colors duration-[var(--duration-fast)] ease-entrance hover:bg-muted hover:text-background"
+              className="nav-ghost inline-flex items-center justify-center gap-2 rounded-pill px-5 py-2.5 text-sm font-medium transition-colors duration-[var(--duration-fast)] ease-entrance"
             >
               <PhoneIcon />
               Call Now
@@ -153,7 +153,7 @@ export const Navbar = () => {
           <a
             href={`tel:${PHONE.tel}`}
             aria-label="Call now"
-            className="flex size-11 items-center justify-center rounded-pill border border-muted text-muted xl:hidden"
+            className="nav-ghost flex size-11 items-center justify-center rounded-pill xl:hidden"
           >
             <PhoneIcon className="size-5" />
           </a>

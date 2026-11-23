@@ -32,6 +32,12 @@
   --raw-color-burgundy-800: #4f0027;
   --raw-color-burgundy-glow: rgb(102 0 51 / 0.14);
 
+  /* The background colour field: three pale tints of the brand, kept light so
+     charcoal text on any of them stays >= 4.5:1. */
+  --raw-color-aurora-cream: #f4e5da;
+  --raw-color-aurora-rose: #dcb4b6;
+  --raw-color-aurora-greige: #d4c2b6;
+
   /* Glass and hairlines — charcoal at low alpha over the beige. */
   --raw-color-glass-fill: rgb(255 255 255 / 0.4);
   --raw-color-glass-line: rgb(74 74 74 / 0.2);
@@ -88,9 +94,12 @@
   --blush-soft: var(--raw-color-beige-200);
   /* Frosted glass: the base colour at partial alpha, over a backdrop blur. */
   --glass-panel: color-mix(in srgb, var(--background) 72%, transparent);
-  --capsule: color-mix(in srgb, var(--background) 80%, transparent);
-  --capsule-line: color-mix(in srgb, var(--muted) 15%, transparent);
-  --capsule-shadow: color-mix(in srgb, var(--muted) 22%, transparent);
+  /* Read by the WebGL background through getComputedStyle — no literal in its code. */
+  --stream-ground: var(--background);
+  --stream-start: var(--raw-color-aurora-cream);
+  --stream-middle: var(--raw-color-aurora-rose);
+  --stream-end: var(--raw-color-aurora-greige);
+  --stream-line: var(--foreground);
   --line: var(--raw-color-line);
   --glass: var(--raw-color-glass-fill);
   --glass-line: var(--raw-color-glass-line);
@@ -199,8 +208,7 @@
   --spacing-section: var(--section-space);
   --container-page: var(--page-width);
 
-  --font-sans: var(--font-inter);
-  --font-heading: var(--font-jakarta);
+  --font-sans: var(--font-onest);
 
   /* Leading floor for clipped TextEngine reveals — see
      obsidian/frontend/text-engine.md → "Alignment & line-height". */
@@ -228,12 +236,6 @@ body {
 }
 
 @layer base {
-  h1,
-  h2,
-  h3 {
-    font-family: var(--font-heading), var(--font-inter), sans-serif;
-  }
-
   /* Adaptive scaling grid — scales the root font-size with the viewport so a
      rem-based layout stays proportional. Each breakpoint divides FONT_BASE
      (16px) by the design base width its range was laid out at:
@@ -297,12 +299,17 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
   display: none;
 }
 
-/* The header's capsule. `--p` (0 at the top of the page → 1 once scrolled) is
-   written by one spring on the header element (components/site/navbar.tsx);
-   everything below derives from it with calc(), so the whole morph is one
-   motion and the server-rendered markup carries no animated colours. */
+/* The header. `--p` (0 at the top of the page → 1 once scrolled) is written by
+   one spring on the header element (components/site/navbar.tsx); everything
+   below derives from it with calc(), so the whole morph — width, shape, tint,
+   border, shadow, blur AND the text colour — is one motion, and the
+   server-rendered markup carries no animated colours. At the top the bar is
+   transparent with dark text; scrolled, a charcoal-black frosted-glass capsule
+   with light text. */
 @layer components {
   .nav-shell {
+    --nav-fg: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 78%), var(--muted));
+    --nav-strong: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 100%), var(--foreground));
     padding-top: calc(var(--p, 0) * 0.75rem);
   }
 
@@ -310,10 +317,34 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
     max-width: calc(90rem - var(--p, 0) * 22rem);
     padding-inline: calc(var(--p, 0) * 1.5rem);
     border-radius: calc(var(--p, 0) * 2.5rem);
-    background-color: color-mix(in srgb, var(--background) calc(var(--p, 0) * 80%), transparent);
-    border: 1px solid color-mix(in srgb, var(--muted) calc(var(--p, 0) * 15%), transparent);
-    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--muted) calc(var(--p, 0) * 22%), transparent);
+    color: var(--nav-strong);
+    background-color: color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 84%), transparent);
+    border: 1px solid color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 16%), transparent);
+    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 38%), transparent);
     -webkit-backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
     backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
+  }
+
+  .nav-link {
+    color: var(--nav-fg);
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-expanded="true"] {
+    color: var(--nav-strong);
+  }
+
+  .nav-ghost {
+    color: var(--nav-fg);
+    border: 1px solid color-mix(in srgb, var(--nav-fg) 55%, transparent);
+  }
+
+  .nav-ghost:hover {
+    background-color: color-mix(in srgb, var(--nav-fg) 14%, transparent);
+    color: var(--nav-strong);
+  }
+
+  .nav-cta {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 30%), transparent);
   }
 }

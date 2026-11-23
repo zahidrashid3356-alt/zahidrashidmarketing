@@ -184,7 +184,7 @@ export const MobileMenu = () => {
         aria-controls="mobile-menu"
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((value) => !value)}
-        className="flex size-11 items-center justify-center rounded-pill border border-glass-line bg-glass"
+        className="nav-ghost flex size-11 items-center justify-center rounded-pill"
       >
         <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="size-5">
           <path d="M3 7h14M3 13h14" />

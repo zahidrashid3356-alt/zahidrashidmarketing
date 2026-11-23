@@ -95,9 +95,9 @@ export const siteConfig = {
   /** Author / creator / publisher — the brand, not the agency. */
   author: "Marketing Pro AI",
   /** Browser theme-color (address bar / PWA) — the brand's ground. */
-  themeColor: "#fbf6f2",
+  themeColor: "#e5cbba",
   /** The manifest and the PWA splash background. */
-  backgroundColor: "#fbf6f2",
+  backgroundColor: "#e5cbba",
   locale: "en_US",
   /**
    * Facts about the organisation — the JSON-LD `Organization` node and the
