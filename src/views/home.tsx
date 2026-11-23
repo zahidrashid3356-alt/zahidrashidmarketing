@@ -1,8 +1,10 @@
 import { RobotProvider, RobotView } from "@/components/common/robot-view";
+import { AboutPreview } from "@/components/site/about-preview";
+import { ContactCta } from "@/components/site/contact-cta";
 import { Hero } from "@/components/site/hero";
 import { ServicesOverview } from "@/components/site/services-overview";
 import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeader } from "@/components/site/site-header";
+import { Navbar } from "@/components/site/navbar";
 
 /**
  * Home view — a Server Component; every section is a Server Component or a thin
@@ -20,10 +22,12 @@ export const HomeView = ({ robot = false }: { robot?: boolean }) => (
     >
       Skip to content
     </a>
-    <SiteHeader />
+    <Navbar />
     <main id="main" className="relative w-full overflow-x-clip">
       <Hero />
+      <AboutPreview />
       <ServicesOverview />
+      <ContactCta />
     </main>
     <SiteFooter />
   </RobotProvider>

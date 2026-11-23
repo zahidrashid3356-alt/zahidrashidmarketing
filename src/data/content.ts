@@ -10,15 +10,29 @@ export interface NavLink {
   href: `/${string}`;
 }
 
-/** The header's plain links. "Services" is the mega menu, rendered from `services.ts`. */
-export const NAV_LINKS: readonly NavLink[] = [
-  { label: "About", href: "/about" },
-  { label: "Our Work", href: "/our-work" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
+/**
+ * The header's links in order. `services` is the mega menu (rendered from
+ * `services.ts`), so it carries no href of its own.
+ */
+export type NavEntry = { kind: "link"; link: NavLink } | { kind: "services" };
+
+export const NAV_ENTRIES: readonly NavEntry[] = [
+  { kind: "link", link: { label: "About Us", href: "/about" } },
+  { kind: "services" },
+  { kind: "link", link: { label: "Blog", href: "/blog" } },
+  { kind: "link", link: { label: "Our Work", href: "/our-work" } },
+  { kind: "link", link: { label: "Areas We Serve", href: "/areas-we-serve" } },
 ];
 
-export const HEADER_CTA = { label: "Get a free quote", href: "/contact" } as const;
+/** Every plain link, in order — the phone menu and the footer read this. */
+export const NAV_LINKS: readonly NavLink[] = NAV_ENTRIES.flatMap((entry) =>
+  entry.kind === "link" ? [entry.link] : [],
+);
+
+/** SAMPLE number — replace with the real one (tel: link, header + phone menu). */
+export const PHONE = { display: "+1 000 000 0000", tel: "+10000000000" } as const;
+
+export const CONTACT_CTA = { label: "Contact Us" } as const;
 
 export const MEGA_MENU = {
   title: "Services",
@@ -50,9 +64,10 @@ export const SERVICES_INTRO = {
 export const FOOTER = {
   blurb: "Marketing, development and design for growing businesses.",
   company: [
-    { label: "About", href: "/about" },
-    { label: "Our Work", href: "/our-work" },
+    { label: "About Us", href: "/about" },
     { label: "Blog", href: "/blog" },
+    { label: "Our Work", href: "/our-work" },
+    { label: "Areas We Serve", href: "/areas-we-serve" },
     { label: "Contact", href: "/contact" },
   ],
   legal: [
@@ -65,3 +80,21 @@ export const FOOTER = {
   company: readonly NavLink[];
   legal: readonly NavLink[];
 };
+
+/** SAMPLE copy — the About preview on the home page. */
+export const ABOUT_PREVIEW = {
+  eyebrow: "About us",
+  title: "A small team that does the work.",
+  body: [
+    "Marketing Pro AI is a digital marketing agency. We handle SEO, websites, paid ads, social media and design, so one team is accountable for how it all fits together.",
+    "We work with businesses in the USA, UK, UAE, Australia and Pakistan, and we tell you plainly what will and will not help.",
+  ],
+} as const;
+
+/** SAMPLE copy — the contact section on the home page. */
+export const CONTACT_PREVIEW = {
+  eyebrow: "Contact",
+  title: "Tell us what you need.",
+  body: "Send a few details about your business and we will reply with what we would do first.",
+  action: "Get a free quote",
+} as const;

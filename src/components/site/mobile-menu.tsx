@@ -6,9 +6,12 @@ import { createPortal } from "react-dom";
 
 import { Spring } from "@/components/common/robot-spring";
 import { buttonClass } from "@/components/ui/button-styles";
-import { HEADER_CTA, NAV_LINKS } from "@/data/content";
+import { CONTACT_CTA, NAV_ENTRIES, PHONE } from "@/data/content";
 import { SERVICE_CATEGORIES, serviceHref } from "@/data/services";
 import { useScrollLock } from "@/hooks/use-scroll-lock";
+
+import { ContactLink } from "./contact-link";
+import { PhoneIcon } from "./phone-icon";
 
 const ROW_FROM = { opacity: 0, y: 20, filter: "blur(0.5rem)" };
 const ROW_TO = { opacity: 1, y: 0, filter: "blur(0rem)" };
@@ -65,70 +68,81 @@ const MobileMenuPanel = ({ open, onClose, closeRef }: PanelProps) => {
 
       <nav aria-label="Menu" className="mt-4 flex-1">
         <ul className="flex flex-col">
-          <Spring
-            tag="li"
-            enabled={open}
-            mode="always"
-            from={ROW_FROM}
-            to={ROW_TO}
-            config={ROW_CONFIG}
-            className="border-b border-line py-3"
-          >
-            <Link href="/services" onClick={onClose} className="block py-1 text-title font-semibold tracking-tight">
-              Services
-            </Link>
-            <div className="mt-2 flex flex-col">
-              {SERVICE_CATEGORIES.map((category) => (
-                <details key={category.slug} className="group border-t border-line first:border-t-0">
-                  <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-base font-medium [&::-webkit-details-marker]:hidden">
-                    {category.title}
-                    <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 transition-transform duration-[var(--duration-fast)] ease-entrance group-open:rotate-180">
-                      <path d="m5 8 5 5 5-5" />
-                    </svg>
-                  </summary>
-                  <ul className="flex flex-col pb-3 pl-3">
-                    <li>
-                      <Link href={serviceHref(category.slug)} onClick={onClose} className="block py-1.5 text-sm font-medium text-accent">
-                        All {category.title}
-                      </Link>
-                    </li>
-                    {category.items.map((service) => (
-                      <li key={service.slug}>
-                        <Link href={serviceHref(category.slug, service.slug)} onClick={onClose} className="block py-1.5 text-sm text-muted">
-                          {service.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              ))}
-            </div>
-          </Spring>
-
-          {NAV_LINKS.map((item, index) => (
-            <Spring
-              key={item.href}
-              tag="li"
-              enabled={open}
-              mode="always"
-              from={ROW_FROM}
-              to={ROW_TO}
-              config={ROW_CONFIG}
-              delayIn={(index + 1) * ROW_STAGGER_MS}
-              className="border-b border-line py-3"
-            >
-              <Link href={item.href} onClick={onClose} className="block py-1 text-title font-semibold tracking-tight">
-                {item.label}
-              </Link>
-            </Spring>
-          ))}
+          {NAV_ENTRIES.map((entry, index) =>
+            entry.kind === "services" ? (
+              <Spring
+                key="services"
+                tag="li"
+                enabled={open}
+                mode="always"
+                from={ROW_FROM}
+                to={ROW_TO}
+                config={ROW_CONFIG}
+                delayIn={index * ROW_STAGGER_MS}
+                className="border-b border-line py-3"
+              >
+                <Link href="/services" onClick={onClose} className="block py-1 text-title font-semibold tracking-tight">
+                  Services
+                </Link>
+                <div className="mt-2 flex flex-col">
+                  {SERVICE_CATEGORIES.map((category) => (
+                    <details key={category.slug} className="group border-t border-line first:border-t-0">
+                      <summary className="flex cursor-pointer list-none items-center justify-between py-3 text-base font-medium [&::-webkit-details-marker]:hidden">
+                        {category.title}
+                        <svg aria-hidden viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="size-4 transition-transform duration-[var(--duration-fast)] ease-entrance group-open:rotate-180">
+                          <path d="m5 8 5 5 5-5" />
+                        </svg>
+                      </summary>
+                      <ul className="flex flex-col pb-3 pl-3">
+                        <li>
+                          <Link href={serviceHref(category.slug)} onClick={onClose} className="block py-1.5 text-sm font-medium text-accent">
+                            All {category.title}
+                          </Link>
+                        </li>
+                        {category.items.map((service) => (
+                          <li key={service.slug}>
+                            <Link href={serviceHref(category.slug, service.slug)} onClick={onClose} className="block py-1.5 text-sm text-muted">
+                              {service.title}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ))}
+                </div>
+              </Spring>
+            ) : (
+              <Spring
+                key={entry.link.href}
+                tag="li"
+                enabled={open}
+                mode="always"
+                from={ROW_FROM}
+                to={ROW_TO}
+                config={ROW_CONFIG}
+                delayIn={index * ROW_STAGGER_MS}
+                className="border-b border-line py-3"
+              >
+                <Link href={entry.link.href} onClick={onClose} className="block py-1 text-title font-semibold tracking-tight">
+                  {entry.link.label}
+                </Link>
+              </Spring>
+            ),
+          )}
         </ul>
       </nav>
 
-      <div className="py-6">
-        <Link href={HEADER_CTA.href} onClick={onClose} className={`${buttonClass("primary")} w-full`}>
-          {HEADER_CTA.label}
-        </Link>
+      <div className="flex flex-col gap-3 py-6">
+        <ContactLink onNavigate={onClose} className={`${buttonClass("primary")} w-full`}>
+          {CONTACT_CTA.label}
+        </ContactLink>
+        <a
+          href={`tel:${PHONE.tel}`}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-pill border border-muted px-7 py-3.5 text-base font-medium text-muted"
+        >
+          <PhoneIcon className="size-5" />
+          Call Now
+        </a>
       </div>
     </Spring>,
     document.body,
@@ -162,7 +176,7 @@ export const MobileMenu = () => {
   }, [open, close]);
 
   return (
-    <div className="md:hidden">
+    <div className="xl:hidden">
       <button
         ref={toggleRef}
         type="button"

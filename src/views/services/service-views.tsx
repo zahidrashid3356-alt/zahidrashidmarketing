@@ -31,7 +31,7 @@ const WHAT_YOU_GET: Record<string, readonly { title: string; body: string }[]> =
     { title: "Designed to convert", body: "Layouts that make the next step obvious to a first-time visitor." },
     { title: "Yours to run", body: "A site you can edit and grow, with handover that makes sense." },
   ],
-  "social-media-marketing": [
+  "social-media-management": [
     { title: "A consistent presence", body: "A posting plan that fits your brand and your audience." },
     { title: "Content made for the platform", body: "Posts, captions and visuals written for how people use each channel." },
     { title: "Community and reporting", body: "Replies handled and a simple report of what worked." },
@@ -41,7 +41,7 @@ const WHAT_YOU_GET: Record<string, readonly { title: string; body: string }[]> =
     { title: "Files that are ready to use", body: "Print and web files in the formats you actually need." },
     { title: "Revisions that finish", body: "A clear round of changes, then final files." },
   ],
-  "paid-advertising": [
+  "paid-advertisement": [
     { title: "Campaigns set up properly", body: "Tracking first, so every lead and sale can be traced to an ad." },
     { title: "Budget watched closely", body: "Spend moves to what works and away from what does not." },
     { title: "Reports tied to results", body: "Leads and sales, not just clicks and impressions." },

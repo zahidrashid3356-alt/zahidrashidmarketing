@@ -5,12 +5,15 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { Headline } from "@/components/ui/headline";
 import { Reveal } from "@/components/ui/reveal";
 import { HERO } from "@/data/content";
-import { SERVICE_CATEGORIES } from "@/data/services";
+
+import { GeometricShape } from "./geometric-shape";
+import { ParticleStage } from "./particle-stage";
 
 /**
  * First screen. The `<h1>` is the page's one title; the lead answers it in two
- * sentences. The right-hand panel is a PLACEHOLDER graphic (service chips on a
- * blush card) — replace with a real image when supplied.
+ * sentences. The right-hand slot is a particle stage: the background swarm
+ * gathers on its shape, then the real image (a PLACEHOLDER geometric drawing)
+ * fades in. Replace the drawing with real artwork when supplied.
  */
 export const Hero = () => (
   <section
@@ -51,26 +54,9 @@ export const Hero = () => (
         </Reveal>
       </div>
 
-      <Reveal delayIn={250} className="relative">
-        <div className="rounded-card bg-blush p-6 shadow-glow sm:p-8">
-          <ul className="flex flex-col gap-3">
-            {SERVICE_CATEGORIES.map((category, index) => (
-              <li
-                key={category.slug}
-                className="flex items-center justify-between gap-4 rounded-2xl bg-surface-raised px-5 py-4"
-              >
-                <span className="flex items-center gap-4">
-                  <span className="text-sm font-medium tabular-nums text-accent">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <span className="text-base font-semibold tracking-tight">{category.title}</span>
-                </span>
-                <span className="text-sm text-muted">{category.items.length} services</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </Reveal>
+      <ParticleStage id="hero" className="mx-auto aspect-square w-full max-w-xl">
+        <GeometricShape />
+      </ParticleStage>
     </div>
   </section>
 );

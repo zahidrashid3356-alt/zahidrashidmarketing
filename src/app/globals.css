@@ -18,24 +18,24 @@
 :root {
   --raw-color-white: #ffffff;
 
-  /* Brand: primary blush #e5cbba, secondary charcoal #4A4A4A, secondary
-     burgundy #660033. The page ground is a pale tint of the blush; the blush
-     itself is a fill (cards, panels) — never text on white (it fails contrast).
-     Text pairs: charcoal on paper ~8:1, charcoal on blush ~5.8:1, white on
-     burgundy ~13:1. */
-  --raw-color-paper-50: #fbf6f2;
-  --raw-color-blush-300: #f1e1d6;
-  --raw-color-blush-400: #e5cbba;
+  /* Brand: base champagne beige #e5cbba, charcoal #4A4A4A (text), burgundy
+     #660033 (accent, CTAs). Pairs: charcoal on beige ~5.8:1, burgundy on beige
+     ~7:1, white on burgundy ~13:1. Raised surfaces are lighter tints of the
+     base so cards still read on it. */
+  --raw-color-beige-400: #e5cbba;
+  --raw-color-beige-100: #f6ede6;
+  --raw-color-beige-200: #efe0d4;
+  --raw-color-beige-500: #d8b9a3;
   --raw-color-ink-950: #2a2527;
   --raw-color-charcoal-600: #4a4a4a;
   --raw-color-burgundy-700: #660033;
   --raw-color-burgundy-800: #4f0027;
   --raw-color-burgundy-glow: rgb(102 0 51 / 0.14);
 
-  /* Glass and hairlines — white fill, charcoal at low alpha over the paper. */
-  --raw-color-glass-fill: rgb(255 255 255 / 0.66);
-  --raw-color-glass-line: rgb(74 74 74 / 0.16);
-  --raw-color-line: rgb(74 74 74 / 0.12);
+  /* Glass and hairlines — charcoal at low alpha over the beige. */
+  --raw-color-glass-fill: rgb(255 255 255 / 0.4);
+  --raw-color-glass-line: rgb(74 74 74 / 0.2);
+  --raw-color-line: rgb(74 74 74 / 0.16);
 
   --raw-radius-sm: 0.5rem;
   --raw-radius-md: 0.75rem;
@@ -79,13 +79,18 @@
    Grammar: --<role>[-<variant>][-<state>]
    --------------------------------------------------------------------------- */
 :root {
-  --background: var(--raw-color-paper-50);
+  --background: var(--raw-color-beige-400);
   --foreground: var(--raw-color-ink-950);
   --muted: var(--raw-color-charcoal-600);
-  --surface: var(--raw-color-white);
-  --surface-raised: var(--raw-color-white);
-  --blush: var(--raw-color-blush-400);
-  --blush-soft: var(--raw-color-blush-300);
+  --surface: var(--raw-color-beige-100);
+  --surface-raised: var(--raw-color-beige-100);
+  --blush: var(--raw-color-beige-500);
+  --blush-soft: var(--raw-color-beige-200);
+  /* Frosted glass: the base colour at partial alpha, over a backdrop blur. */
+  --glass-panel: color-mix(in srgb, var(--background) 72%, transparent);
+  --capsule: color-mix(in srgb, var(--background) 80%, transparent);
+  --capsule-line: color-mix(in srgb, var(--muted) 15%, transparent);
+  --capsule-shadow: color-mix(in srgb, var(--muted) 22%, transparent);
   --line: var(--raw-color-line);
   --glass: var(--raw-color-glass-fill);
   --glass-line: var(--raw-color-glass-line);
@@ -96,7 +101,7 @@
   --accent-glow: var(--raw-color-burgundy-glow);
 
   /* Full-screen phone menu — its own roles (obsidian/frontend/mobile-menus.md). */
-  --menu-surface: var(--raw-color-paper-50);
+  --menu-surface: var(--raw-color-beige-400);
   --menu-foreground: var(--foreground);
 
   --display-size: var(--raw-text-display);
@@ -163,6 +168,7 @@
   --color-line: var(--line);
   --color-glass: var(--glass);
   --color-glass-line: var(--glass-line);
+  --color-glass-panel: var(--glass-panel);
   --color-blush: var(--blush);
   --color-blush-soft: var(--blush-soft);
   --color-accent: var(--accent);
@@ -193,7 +199,8 @@
   --spacing-section: var(--section-space);
   --container-page: var(--page-width);
 
-  --font-sans: var(--font-onest);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-jakarta);
 
   /* Leading floor for clipped TextEngine reveals — see
      obsidian/frontend/text-engine.md → "Alignment & line-height". */
@@ -221,6 +228,12 @@ body {
 }
 
 @layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading), var(--font-inter), sans-serif;
+  }
+
   /* Adaptive scaling grid — scales the root font-size with the viewport so a
      rem-based layout stays proportional. Each breakpoint divides FONT_BASE
      (16px) by the design base width its range was laid out at:
@@ -282,4 +295,25 @@ body {
 html[data-consent] [data-cookie-banner],
 html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
   display: none;
+}
+
+/* The header's capsule. `--p` (0 at the top of the page → 1 once scrolled) is
+   written by one spring on the header element (components/site/navbar.tsx);
+   everything below derives from it with calc(), so the whole morph is one
+   motion and the server-rendered markup carries no animated colours. */
+@layer components {
+  .nav-shell {
+    padding-top: calc(var(--p, 0) * 0.75rem);
+  }
+
+  .nav-capsule {
+    max-width: calc(90rem - var(--p, 0) * 22rem);
+    padding-inline: calc(var(--p, 0) * 1.5rem);
+    border-radius: calc(var(--p, 0) * 2.5rem);
+    background-color: color-mix(in srgb, var(--background) calc(var(--p, 0) * 80%), transparent);
+    border: 1px solid color-mix(in srgb, var(--muted) calc(var(--p, 0) * 15%), transparent);
+    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--muted) calc(var(--p, 0) * 22%), transparent);
+    -webkit-backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
+    backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
+  }
 }

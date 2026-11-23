@@ -84,6 +84,7 @@ const STATIC_ROUTES: readonly SiteRoute[] = [
     priority: 0.9,
   },
   { path: "/about", label: "About", summary: "Who we are and how we work.", indexable: false, changeFrequency: "yearly", priority: 0.6 },
+  { path: "/areas-we-serve", label: "Areas We Serve", summary: "The countries and markets Marketing Pro AI works in.", indexable: false, changeFrequency: "yearly", priority: 0.6 },
   { path: "/our-work", label: "Our Work", summary: "Selected projects and client work.", indexable: false, changeFrequency: "monthly", priority: 0.7 },
   { path: "/blog", label: "Blog", summary: "Guides and notes on SEO, web and marketing.", indexable: false, changeFrequency: "weekly", priority: 0.6 },
   { path: "/contact", label: "Contact", summary: "Get a free quote or ask a question.", indexable: false, changeFrequency: "yearly", priority: 0.8 },

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { JsonLd } from "@/components/common/json-ld";
 import { SiteFooter } from "@/components/site/site-footer";
-import { SiteHeader } from "@/components/site/site-header";
+import { Navbar } from "@/components/site/navbar";
 import { routeTrail } from "@/lib/routes";
 import { getBreadcrumbStructuredData, jsonLdGraph, type JsonLdNode } from "@/utils/seo/structured-data";
 
@@ -33,7 +33,7 @@ export const PageShell = ({ path, nodes = [], children }: PageShellProps) => {
       >
         Skip to content
       </a>
-      <SiteHeader />
+      <Navbar />
       <main id="main" className="relative w-full overflow-x-clip px-gutter pb-section pt-28 sm:pt-32">
         <div className="mx-auto w-full max-w-page">
           {trail.length > 1 ? (
