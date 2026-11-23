@@ -1,0 +1,285 @@
+/* `source("../")` limits class detection to `src/` (this file lives in src/app).
+   Without it Tailwind v4 scans the whole repo — including obsidian/ and .claude/,
+   where documented class *patterns* like duration-[var(--duration-*)] parse as
+   real candidates and emit CSS warnings. Docs are not a source of utilities. */
+@import "tailwindcss" source("../");
+
+/* ---------------------------------------------------------------------------
+   TIER 1 — PRIMITIVES  (`--raw-*`)
+   Raw literal values. The only tier allowed to contain a hex/px/ms literal.
+   Never referenced in markup, never bound into @theme. Rename freely.
+   Grammar: --raw-<category>-<name>[-<shade>]
+   See obsidian/frontend/design-system.md → "Token naming convention".
+
+   Look: light, warm paper ground, charcoal text, blush panels, one burgundy
+   accent (Marketing Pro AI brand). Every text/ground pair is >= 4.5:1.
+   Change a brand colour here and nowhere else.
+   --------------------------------------------------------------------------- */
+:root {
+  --raw-color-white: #ffffff;
+
+  /* Brand: primary blush #e5cbba, secondary charcoal #4A4A4A, secondary
+     burgundy #660033. The page ground is a pale tint of the blush; the blush
+     itself is a fill (cards, panels) — never text on white (it fails contrast).
+     Text pairs: charcoal on paper ~8:1, charcoal on blush ~5.8:1, white on
+     burgundy ~13:1. */
+  --raw-color-paper-50: #fbf6f2;
+  --raw-color-blush-300: #f1e1d6;
+  --raw-color-blush-400: #e5cbba;
+  --raw-color-ink-950: #2a2527;
+  --raw-color-charcoal-600: #4a4a4a;
+  --raw-color-burgundy-700: #660033;
+  --raw-color-burgundy-800: #4f0027;
+  --raw-color-burgundy-glow: rgb(102 0 51 / 0.14);
+
+  /* Glass and hairlines — white fill, charcoal at low alpha over the paper. */
+  --raw-color-glass-fill: rgb(255 255 255 / 0.66);
+  --raw-color-glass-line: rgb(74 74 74 / 0.16);
+  --raw-color-line: rgb(74 74 74 / 0.12);
+
+  --raw-radius-sm: 0.5rem;
+  --raw-radius-md: 0.75rem;
+  --raw-radius-lg: 1.5rem;
+  --raw-radius-pill: 62.5rem;
+
+  --raw-shadow-glow: 0 1.25rem 3.5rem rgb(102 0 51 / 0.12);
+
+  --raw-duration-fast: 150ms;
+  --raw-duration-normal: 250ms;
+
+  /* Type scale. Laid out on the adaptive grid (1rem = 16px at the design base
+     width of each range), so one rem value scales with the viewport. The phone
+     values apply at <= 640px (a 360px base). */
+  --raw-text-display: 5.25rem;
+  --raw-text-headline: 3.75rem;
+  --raw-text-title: 1.75rem;
+  --raw-text-lead: 1.375rem;
+  --raw-text-display-phone: 2.75rem;
+  --raw-text-headline-phone: 2.125rem;
+  --raw-text-title-phone: 1.5rem;
+  --raw-text-lead-phone: 1.125rem;
+
+  /* Layout rhythm. Phone gutter is 1rem — the starter's phone rule. */
+  --raw-space-gutter: 4rem;
+  --raw-space-gutter-phone: 1rem;
+  --raw-space-section: 5rem;
+  --raw-space-section-phone: 3rem;
+  --raw-size-page: 90rem;
+
+  /* Focus ring. */
+  --raw-size-ring: 0.125rem;
+  --raw-size-ring-offset: 0.25rem;
+}
+
+/* ---------------------------------------------------------------------------
+   TIER 2 — SEMANTIC  (role names, no namespace prefix)
+   Purpose, not appearance. Always `var(--raw-*)` — never a literal.
+   This is the themeable layer: the phone overrides happen HERE, which is why
+   these are separate from the @theme bindings below (see the note there).
+   Grammar: --<role>[-<variant>][-<state>]
+   --------------------------------------------------------------------------- */
+:root {
+  --background: var(--raw-color-paper-50);
+  --foreground: var(--raw-color-ink-950);
+  --muted: var(--raw-color-charcoal-600);
+  --surface: var(--raw-color-white);
+  --surface-raised: var(--raw-color-white);
+  --blush: var(--raw-color-blush-400);
+  --blush-soft: var(--raw-color-blush-300);
+  --line: var(--raw-color-line);
+  --glass: var(--raw-color-glass-fill);
+  --glass-line: var(--raw-color-glass-line);
+
+  --accent: var(--raw-color-burgundy-700);
+  --accent-hover: var(--raw-color-burgundy-800);
+  --accent-foreground: var(--raw-color-white);
+  --accent-glow: var(--raw-color-burgundy-glow);
+
+  /* Full-screen phone menu — its own roles (obsidian/frontend/mobile-menus.md). */
+  --menu-surface: var(--raw-color-paper-50);
+  --menu-foreground: var(--foreground);
+
+  --display-size: var(--raw-text-display);
+  --headline-size: var(--raw-text-headline);
+  --title-size: var(--raw-text-title);
+  --lead-size: var(--raw-text-lead);
+
+  --gutter: var(--raw-space-gutter);
+  --section-space: var(--raw-space-section);
+  --page-width: var(--raw-size-page);
+
+  --card-radius: var(--raw-radius-lg);
+  --pill-radius: var(--raw-radius-pill);
+  --glow-shadow: var(--raw-shadow-glow);
+
+  --ring-width: var(--raw-size-ring);
+  --ring-offset: var(--raw-size-ring-offset);
+
+  --duration-fast: var(--raw-duration-fast);
+  --duration-normal: var(--raw-duration-normal);
+
+  /* Consent UI (cookie banner + preferences modal) — dressed in the site's
+     own surface, accent and radii, per obsidian/frontend/components/common.md
+     → "Brand the consent UI". The site is light-only, so these hold at every
+     colour scheme. */
+  --consent-surface: var(--surface-raised);
+  --consent-text: var(--foreground);
+  --consent-action: var(--accent);
+  --consent-action-text: var(--accent-foreground);
+  --consent-radius: var(--card-radius);
+  --consent-radius-control: var(--pill-radius);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --display-size: var(--raw-text-display-phone);
+    --headline-size: var(--raw-text-headline-phone);
+    --title-size: var(--raw-text-title-phone);
+    --lead-size: var(--raw-text-lead-phone);
+    --gutter: var(--raw-space-gutter-phone);
+    --section-space: var(--raw-space-section-phone);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   THEME BINDINGS — map semantic tokens into Tailwind namespaces.
+   Every entry is exactly `--<tw-namespace>-<role>: var(--<role>)`.
+   `inline` is required: it inlines the var() into each utility, so the
+   overrides on the Tier 2 tokens above cascade. Binding a literal
+   here instead would freeze the value and break theming.
+
+   Only these namespaces generate utilities (verified against tailwindcss
+   v4.3.3): --color-* --spacing-* --radius-* --leading-* --tracking-* --text-*
+   --font-* --ease-* --breakpoint-* --container-* --shadow-* --blur-* --animate-*
+   NOTE: there is NO --duration-* namespace in v4 — `duration-fast` compiles to
+   nothing. Durations stay Tier 2 only and are used as duration-[var(--duration-fast)].
+   --------------------------------------------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-glass: var(--glass);
+  --color-glass-line: var(--glass-line);
+  --color-blush: var(--blush);
+  --color-blush-soft: var(--blush-soft);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-glow: var(--accent-glow);
+
+  --color-menu-surface: var(--menu-surface);
+  --color-menu-foreground: var(--menu-foreground);
+
+  --color-consent-surface: var(--consent-surface);
+  --color-consent-text: var(--consent-text);
+  --color-consent-action: var(--consent-action);
+  --color-consent-action-text: var(--consent-action-text);
+  --radius-consent: var(--consent-radius);
+  --radius-consent-control: var(--consent-radius-control);
+
+  --radius-card: var(--card-radius);
+  --radius-pill: var(--pill-radius);
+  --shadow-glow: var(--glow-shadow);
+
+  --text-display: var(--display-size);
+  --text-headline: var(--headline-size);
+  --text-title: var(--title-size);
+  --text-lead: var(--lead-size);
+
+  --spacing-gutter: var(--gutter);
+  --spacing-section: var(--section-space);
+  --container-page: var(--page-width);
+
+  --font-sans: var(--font-onest);
+
+  /* Leading floor for clipped TextEngine reveals — see
+     obsidian/frontend/text-engine.md → "Alignment & line-height". */
+  --leading-display: 1.1;
+
+  --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* `safe center`: a page taller than the viewport starts at the top instead of
+     being centred past the scroll origin (a long page — a privacy policy — lost
+     its back link and title above the top edge with plain `center`). One-screen
+     pages and the 404 stay centred. */
+  justify-content: safe center;
+  /* `min-height` + `100%` (not `height: 100vh` / `100vw`): this is a long
+     scrolling page, and `100vw` includes the scrollbar — it adds a horizontal
+     scroll on desktop. */
+  min-height: 100vh;
+  width: 100%;
+}
+
+@layer base {
+  /* Adaptive scaling grid — scales the root font-size with the viewport so a
+     rem-based layout stays proportional. Each breakpoint divides FONT_BASE
+     (16px) by the design base width its range was laid out at:
+       font-size: 16 * 100 / baseWidth  (vw)
+     Above 1920px the AdaptiveGrid component takes over (scale-up).
+     Keep in sync with src/components/common/grid/grid.config.ts. */
+  html {
+    font-size: 16px;
+    color-scheme: light;
+  }
+
+  @media (max-width: 1920px) {
+    html {
+      font-size: 0.833333vw; /* 16 * 100 / 1920 */
+    }
+  }
+
+  @media (max-width: 1440px) {
+    html {
+      font-size: 1.111111vw; /* 16 * 100 / 1440 */
+    }
+  }
+
+  @media (max-width: 1024px) {
+    html {
+      font-size: 1.5625vw; /* 16 * 100 / 1024 */
+    }
+  }
+
+  @media (max-width: 640px) {
+    html {
+      font-size: 4.444444vw; /* 16 * 100 / 360 */
+    }
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  /* One visible focus ring for every control — never removed without a
+     replacement (obsidian/frontend/html-semantics.md). */
+  :focus-visible {
+    outline: var(--ring-width) solid var(--accent);
+    outline-offset: var(--ring-offset);
+  }
+}
+
+@layer utilities {
+}
+
+@layer components {
+}
+
+/* The consent banner is server-rendered (it paints with the page — it is the
+   phone's LCP element). Hidden before paint for a visitor who already chose
+   (`Cookie/consent-flag.ts`) and on the robot form, which has no visitor to
+   ask. Outside any layer and selector list on purpose. */
+html[data-consent] [data-cookie-banner],
+html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
+  display: none;
+}
