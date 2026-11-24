@@ -16,7 +16,7 @@ const SIZES: Record<ButtonSize, string> = {
 };
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: "bg-accent text-accent-foreground hover:bg-accent-hover",
+  primary: "btn-glass",
   secondary:
     "border border-glass-line bg-glass text-foreground hover:border-accent hover:text-accent",
 };

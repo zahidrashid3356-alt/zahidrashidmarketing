@@ -34,9 +34,10 @@
 
   /* The background colour field: three pale tints of the brand, kept light so
      charcoal text on any of them stays >= 4.5:1. */
-  --raw-color-aurora-cream: #f4e5da;
-  --raw-color-aurora-rose: #dcb4b6;
-  --raw-color-aurora-greige: #d4c2b6;
+  --raw-color-aurora-white: #fffdfb;
+  --raw-color-aurora-cream: #f7ede4;
+  --raw-color-aurora-rose: #ecd3c8;
+  --raw-color-aurora-greige: #f1e4d9;
 
   /* Glass and hairlines — charcoal at low alpha over the beige. */
   --raw-color-glass-fill: rgb(255 255 255 / 0.4);
@@ -85,7 +86,7 @@
    Grammar: --<role>[-<variant>][-<state>]
    --------------------------------------------------------------------------- */
 :root {
-  --background: var(--raw-color-beige-400);
+  --background: var(--raw-color-beige-100);
   --foreground: var(--raw-color-ink-950);
   --muted: var(--raw-color-charcoal-600);
   --surface: var(--raw-color-beige-100);
@@ -95,7 +96,7 @@
   /* Frosted glass: the base colour at partial alpha, over a backdrop blur. */
   --glass-panel: color-mix(in srgb, var(--background) 72%, transparent);
   /* Read by the WebGL background through getComputedStyle — no literal in its code. */
-  --stream-ground: var(--background);
+  --stream-ground: var(--raw-color-aurora-white);
   --stream-start: var(--raw-color-aurora-cream);
   --stream-middle: var(--raw-color-aurora-rose);
   --stream-end: var(--raw-color-aurora-greige);
@@ -218,7 +219,7 @@
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(165deg, var(--raw-color-aurora-white) 0%, var(--raw-color-beige-100) 55%, var(--raw-color-beige-200) 100%) fixed;
   color: var(--foreground);
   display: flex;
   flex-direction: column;
@@ -308,7 +309,7 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
    with light text. */
 @layer components {
   .nav-shell {
-    --nav-fg: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 78%), var(--muted));
+    --nav-fg: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 92%), var(--muted));
     --nav-strong: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 100%), var(--foreground));
     padding-top: calc(var(--p, 0) * 0.75rem);
   }
@@ -318,11 +319,11 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
     padding-inline: calc(var(--p, 0) * 1.5rem);
     border-radius: calc(var(--p, 0) * 2.5rem);
     color: var(--nav-strong);
-    background-color: color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 84%), transparent);
-    border: 1px solid color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 16%), transparent);
-    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 38%), transparent);
-    -webkit-backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
-    backdrop-filter: blur(calc(var(--p, 0) * 1.25rem));
+    background-color: color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 64%), transparent);
+    border: 1px solid color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 30%), transparent);
+    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 24%), transparent);
+    -webkit-backdrop-filter: blur(calc(var(--p, 0) * 1.5rem)) saturate(calc(1 + var(--p, 0) * 0.4));
+    backdrop-filter: blur(calc(var(--p, 0) * 1.5rem)) saturate(calc(1 + var(--p, 0) * 0.4));
   }
 
   .nav-link {
@@ -343,8 +344,23 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
     background-color: color-mix(in srgb, var(--nav-fg) 14%, transparent);
     color: var(--nav-strong);
   }
+}
 
-  .nav-cta {
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 30%), transparent);
+/* Primary button as glass: translucent burgundy over a backdrop blur, a light
+   rim and an inner highlight. 68% keeps white text >= 4.5:1 on a white page. */
+@layer components {
+  .btn-glass {
+    background-color: color-mix(in srgb, var(--accent) 68%, transparent);
+    color: var(--accent-foreground);
+    border: 1px solid color-mix(in srgb, var(--raw-color-white) 38%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--raw-color-white) 45%, transparent),
+      0 0.5rem 1.5rem color-mix(in srgb, var(--accent) 22%, transparent);
+    -webkit-backdrop-filter: blur(0.75rem) saturate(1.4);
+    backdrop-filter: blur(0.75rem) saturate(1.4);
+  }
+
+  .btn-glass:hover {
+    background-color: color-mix(in srgb, var(--accent) 82%, transparent);
   }
 }
