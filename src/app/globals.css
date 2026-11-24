@@ -34,10 +34,11 @@
 
   /* The background colour field: three pale tints of the brand, kept light so
      charcoal text on any of them stays >= 4.5:1. */
-  --raw-color-aurora-white: #fffdfb;
-  --raw-color-aurora-cream: #f7ede4;
-  --raw-color-aurora-rose: #ecd3c8;
-  --raw-color-aurora-greige: #f1e4d9;
+  --raw-color-aurora-white: #fffdf9;
+  --raw-color-aurora-cream: #f6ecde;
+  --raw-color-aurora-rose: #ead8cc;
+  --raw-color-aurora-greige: #efe3cf;
+  --raw-color-gold-600: #a8844d;
 
   /* Glass and hairlines — charcoal at low alpha over the beige. */
   --raw-color-glass-fill: rgb(255 255 255 / 0.4);
@@ -100,7 +101,7 @@
   --stream-start: var(--raw-color-aurora-cream);
   --stream-middle: var(--raw-color-aurora-rose);
   --stream-end: var(--raw-color-aurora-greige);
-  --stream-line: var(--foreground);
+  --stream-line: var(--raw-color-gold-600);
   --line: var(--raw-color-line);
   --glass: var(--raw-color-glass-fill);
   --glass-line: var(--raw-color-glass-line);
@@ -272,6 +273,14 @@ body {
     }
   }
 
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
   ::selection {
     background: var(--accent);
     color: var(--accent-foreground);
@@ -305,12 +314,12 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
    below derives from it with calc(), so the whole morph — width, shape, tint,
    border, shadow, blur AND the text colour — is one motion, and the
    server-rendered markup carries no animated colours. At the top the bar is
-   transparent with dark text; scrolled, a charcoal-black frosted-glass capsule
-   with light text. */
+   transparent with dark text; scrolled, a light frosted-glass capsule with a
+   fine gold rim and dark text. */
 @layer components {
   .nav-shell {
-    --nav-fg: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 92%), var(--muted));
-    --nav-strong: color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 100%), var(--foreground));
+    --nav-fg: var(--muted);
+    --nav-strong: var(--foreground);
     padding-top: calc(var(--p, 0) * 0.75rem);
   }
 
@@ -319,9 +328,11 @@ html:has(meta[name="x-robot-view"]) [data-cookie-banner] {
     padding-inline: calc(var(--p, 0) * 1.5rem);
     border-radius: calc(var(--p, 0) * 2.5rem);
     color: var(--nav-strong);
-    background-color: color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 64%), transparent);
-    border: 1px solid color-mix(in srgb, var(--raw-color-beige-100) calc(var(--p, 0) * 30%), transparent);
-    box-shadow: 0 0.5rem 2rem color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 24%), transparent);
+    background-color: color-mix(in srgb, var(--raw-color-white) calc(var(--p, 0) * 52%), transparent);
+    border: 1px solid color-mix(in srgb, var(--raw-color-gold-600) calc(var(--p, 0) * 28%), transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, var(--raw-color-white) calc(var(--p, 0) * 80%), transparent),
+      0 0.5rem 2rem color-mix(in srgb, var(--foreground) calc(var(--p, 0) * 10%), transparent);
     -webkit-backdrop-filter: blur(calc(var(--p, 0) * 1.5rem)) saturate(calc(1 + var(--p, 0) * 0.4));
     backdrop-filter: blur(calc(var(--p, 0) * 1.5rem)) saturate(calc(1 + var(--p, 0) * 0.4));
   }

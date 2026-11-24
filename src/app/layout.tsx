@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Onest } from "next/font/google";
+import { Onest, Playfair_Display } from "next/font/google";
 
 import {
   generateMetadata,
@@ -19,6 +19,12 @@ import { ScrollLayout } from "@/layouts/scroll-layout";
 import { siteConfig } from "@/lib/site";
 
 import "@/app/globals.css";
+
+const display = Playfair_Display({
+  variable: "--font-display",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const onest = Onest({
   variable: "--font-onest",
@@ -48,7 +54,7 @@ export default function RootLayout({
   return (
     // `data-consent` is set on <html> by CONSENT_FLAG_SCRIPT before hydration.
     <html lang={siteConfig.locale.split("_")[0]} suppressHydrationWarning>
-      <body className={`${onest.variable}`}>
+      <body className={`${onest.variable} ${display.variable}`}>
         {/* Before anything is parsed: marks a returning visitor's choice so the
             server-rendered consent banner is hidden before its first paint. */}
         <script dangerouslySetInnerHTML={{ __html: CONSENT_FLAG_SCRIPT }} />
